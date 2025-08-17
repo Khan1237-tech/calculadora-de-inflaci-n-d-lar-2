@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calculadora de inflación dólar en Argentina</title>
+    <meta name="keywords" content="calculadora inflación dolar, calculadora inflacion dolares,  calculadora de inflación dólar en argentina	, paving solutions,  calculadora inflacion venezuela	">
+    <meta name="author" content="Calculadora de inflación">
+    <meta name="robots" content="index, follow">
+    <style>
+        /* Reset and base */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #f0f4f8;
+            color: #222;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 720px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 8px 20px rgba(65, 99, 244, 0.3);
+        }
+        header h1 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 2.5rem;
+            letter-spacing: 0.05em;
+        }
+        header p {
+            font-size: 1.1rem;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        /* Calculator and form */
+        .calculator {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(100, 116, 139, 0.15);
+            width: 100%;
+            max-width: 720px;
+            margin-bottom: 40px;
+            transition: box-shadow 0.3s ease;
+        }
+        .calculator:hover {
+            box-shadow: 0 14px 35px rgba(100, 116, 139, 0.25);
+        }
+        form label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #344054;
+            font-size: 0.9rem;
+            margin-top: 18px;
+        }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline-offset: 3px;
+        }
+        select:focus, input[type="number"]:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+        }
+        button {
+            margin-top: 30px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border: none;
+            padding: 14px 0;
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #1e40af, #2563eb);
+            box-shadow: 0 8px 22px rgba(37, 99, 235, 0.6);
+        }
+        /* Results Table */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 30px 0 10px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(73, 93, 175, 0.1);
+            font-size: 1rem;
+        }
+        thead {
+            background: #3b82f6;
+            color: white;
+        }
+        th, td {
+            padding: 14px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e0e7ff;
+        }
+        tbody tr:hover {
+            background: #e0e7ff;
+        }
+        .result {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #1e40af;
+            text-align: center;
+            margin-top: 10px;
+        }
+        /* Button link */
+        a.button-link {
+            display: inline-block;
+            margin: 20px 0 40px;
+            background: #ef4444;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.36);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        a.button-link:hover {
+            background: #b91c1c;
+            box-shadow: 0 8px 22px rgba(185, 28, 28, 0.65);
+        }
+        /* Article */
+        article {
+            max-width: 720px;
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 12px 28px rgba(143, 155, 179, 0.2);
+            margin-bottom: 50px;
+            color: #374151;
+            line-height: 1.75;
+        }
+        article h2 {
+            color: #2563eb;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            border-left: 6px solid #2563eb;
+            padding-left: 12px;
+        }
+        article img {
+            width: 100%;
+            border-radius: 12px;
+            margin: 25px 0;
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+        }
+        /* Author Profile */
+        .author-profile {
+            max-width: 720px;
+            background: #e0e7ff;
+            border-radius: 15px;
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 6px 18px rgba(59, 130, 246, 0.2);
+            margin-bottom: 50px;
+        }
+        .author-profile img {
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border: 3px solid #2563eb;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+            flex-shrink: 0;
+        }
+        .author-info {
+            color: #1e293b;
+        }
+        .author-info strong {
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+            color: #1e40af;
+        }
+        /* Footer */
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            .calculator, article, .author-profile {
+                padding: 25px 20px;
+                width: 100%;
+            }
+            .author-profile {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .author-profile img {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Calculadora de inflación dólar en Argentina</h1>
+        <p>Convierte precios históricos al valor actual ajustado por inflación, usando datos oficiales del IPC y precios del dólar.</p>
+    </header>
+    
+    <section class="calculator">
+        <form id="inflationForm">
+            <label for="startYear">Año inicial:</label>
+            <select id="startYear" required></select>
+            
+            <label for="startMonth">Mes inicial:</label>
+            <select id="startMonth" required>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+
+            <label for="endYear">Año final:</label>
+            <select id="endYear" required></select>
+            
+            <label for="endMonth">Mes final:</label>
+            <select id="endMonth" required>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+
+            <label for="amount">Cantidad en $ (pesos):</label>
+            <input type="number" id="amount" min="1" step="any" placeholder="Ejemplo: 100" required />
+            
+            <button type="submit">Calcular inflación</button>
+        </form>
+
+        <table id="resultTable" style="display:none;">
+            <thead>
+                <tr>
+                    <th>Mes y Año</th>
+                    <th>Índice de Precios al Consumidor (IPC)</th>
+                    <th>Valor Ajustado ($)</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="result" id="resultText"></div>
+    </section>
+
+    <section>
+        <a href="https://calculadorade-inflacion.com/" rel="nofollow" class="button-link">
+            calculadora de inflación dólar en argentina
+        </a>
+    </section>
+
+    <article>
+        <h2>Calculadora de inflación histórica de Argentina</h2>
+        <p>
+            Los precios históricos pueden ser convertidos a precios actuales usando datos de índices de inflación históricos. 
+            Usá la calculadora de arriba para convertir precios entre cualquier mes desde enero de 1992 (mes en el que fue introducido el Peso) y el mes actual. 
+            ¡Novedades! Dólar ajustado por inflación. Elegí un mes de los próximos seis para ver la inflación proyectada por el BCRA.
+        </p>
+        <img src="image.jpeg" alt="Gráfico de la inflación en Argentina" />
+        <p>
+            El ajuste de precios se realiza usando el índice de precios al consumidor. Los datos posteriores a 2017 son extraídos del INDEC, y los anteriores del trabajo “Online and official price indexes…” del MIT. 
+            Los pronósticos de inflación de meses futuros son del Relevamiento de Expectativas de Mercado del Banco Central. Además, los datos del precio del dólar se obtienen de fuentes oficiales y mercado libre.
+        </p>
+        <p>
+            Para dudas frecuentes: las fechas se interpretan como el primer día del mes y los precios ajustados reflejan la evolución promedio del IPC, que puede diferir del aumento del dólar directamente.
+        </p>
+    </article>
+
+    <section class="author-profile">
+        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Foto del autor" />
+        <div class="author-info">
+            <strong>Autor: </strong>
+            <p>Economista especializado en inflación y finanzas argentinas. Apasionado por ofrecer herramientas accesibles para comprender la economía del país.</p>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 Calculadora de inflación dólar en Argentina
+    </footer>
+
+    <script>
+        // Populate year selectors dynamically: from 1992 to current year
+        const startYearSelect = document.getElementById('startYear');
+        const endYearSelect = document.getElementById('endYear');
+        const currentYear = new Date().getFullYear();
+
+        for(let year = 1992; year <= currentYear; year++) {
+            let option1 = document.createElement('option');
+            option1.value = year;
+            option1.textContent = year;
+            startYearSelect.appendChild(option1);
+
+            let option2 = document.createElement('option');
+            option2.value = year;
+            option2.textContent = year;
+            endYearSelect.appendChild(option2);
+        }
+        startYearSelect.value = 2025 <= currentYear ? 2025 : currentYear;
+        endYearSelect.value = currentYear;
+
+        // Mock inflation data for demonstration only
+        const ipcData = {
+          "1992-01": 100, "1992-02": 101, "1992-03": 102,
+          "2025-01": 3000, "2025-02": 3020, "2025-03": 3040,
+          "2025-04": 3060, "2025-05": 3080, "2025-06": 3100,
+          "2025-07": 3120, "2025-08": 3140
+        };
+
+        function pad(num) {
+            return num < 10 ? '0' + num : num;
+        }
+
+        function calculateAdjustedAmount(amount, startIPC, endIPC) {
+            return amount * (endIPC / startIPC);
+        }
+
+        function getIPC(year, month) {
+            let key = year + '-' + pad(month);
+            if(ipcData[key] !== undefined) return ipcData[key];
+            for(let m = month; m > 0; m--) {
+                let k = year + '-' + pad(m);
+                if(ipcData[k] !== undefined) return ipcData[k];
+            }
+            return 100;
+        }
+
+        document.getElementById('inflationForm').addEventListener('submit', function(event){
+            event.preventDefault();
+
+            const sy = parseInt(startYearSelect.value);
+            const sm = parseInt(document.getElementById('startMonth').value);
+            const ey = parseInt(endYearSelect.value);
+            const em = parseInt(document.getElementById('endMonth').value);
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            if(ey < sy || (ey === sy && em < sm)) {
+                alert('La fecha final debe ser igual o posterior a la fecha inicial.');
+                return;
+            }
+
+            const startIPC = getIPC(sy, sm);
+            const endIPC = getIPC(ey, em);
+            const adjustedAmount = calculateAdjustedAmount(amount, startIPC, endIPC);
+
+            const tbody = document.querySelector('#resultTable tbody');
+            tbody.innerHTML = "";
+
+            const startRow = document.createElement('tr');
+            startRow.innerHTML = `<td>${monthName(sm)} ${sy}</td><td>${startIPC.toFixed(2)}</td><td>$${amount.toFixed(2)}</td>`;
+            tbody.appendChild(startRow);
+
+            const endRow = document.createElement('tr');
+            endRow.innerHTML = `<td>${monthName(em)} ${ey}</td><td>${endIPC.toFixed(2)}</td><td>$${adjustedAmount.toFixed(2)}</td>`;
+            tbody.appendChild(endRow);
+
+            document.getElementById('resultTable').style.display = 'table';
+
+            document.getElementById('resultText').textContent = 
+                `La cantidad de $${amount.toFixed(2)} de ${monthName(sm)} ${sy} equivale aproximadamente a $${adjustedAmount.toFixed(2)} en ${monthName(em)} ${ey} ajustado por inflación.`;
+        });
+
+        function monthName(monthNum) {
+            const months = [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            ];
+            return months[monthNum - 1];
+        }
+    </script>
+</body>
+</html>
